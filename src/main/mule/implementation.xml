@@ -12,7 +12,7 @@ http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mu
 		<http:listener doc:name="GET /flights" doc:id="822c203b-6413-4508-88da-bec1634bce6f" config-ref="HTTP_Listener_config" path="/flights" allowedMethods="GET" />
 		<set-variable value="#[message.attributes.queryParams.airline]" doc:name="airline" doc:id="8b1cabc8-7d9b-4819-875b-369acfb58c33" variableName="airline"/>
 		<flow-ref doc:name="setCode" doc:id="f2dd0354-d10d-4e4f-b65f-5e9c509c1fa5" name="setCode"/>
-		<validation:is-true doc:name="Is valid destination" doc:id="0fe2d48b-c729-407a-b90c-d26be697d225" expression="#[['SFO','LAX','CLE','PDX','PDF'] contains vars.code]" message="#['Invalid destination' ++ ' ' ++ (vars.code default ' ')]"/>
+		<validation:is-true doc:name="Is valid destination" doc:id="0fe2d48b-c729-407a-b90c-d26be697d225" expression="#[['SFO','LAX','CLE','PDX','PDF',' '] contains vars.code]" message="#['Invalid destination' ++ ' ' ++ (vars.code default ' ')]"/>
 		<choice doc:name="Choice" doc:id="1b178457-acc9-4bbf-b509-95587464af3d" >
 			<when expression='#[vars.airline == "american"]'>
 				<flow-ref doc:name="getAmericanFlights" doc:id="1aeed804-e7a5-4689-9509-054f44a33126" name="getAmericanFlights"/>
@@ -39,7 +39,7 @@ payload]]></ee:set-payload>
 		<logger level="INFO" doc:name="Logger" doc:id="c2ac6326-810c-4929-9e6d-531c7d9742e6" />
 	</flow>
 	<sub-flow name="setCode" doc:id="e106ffa1-a5a7-4bd5-90fc-55b66dba2f2e">
-		<set-variable value="#[message.attributes.queryParams.code]" doc:name="code" doc:id="9d8b2cf1-e0a5-4923-9c1b-a11783ec63a3" variableName="code" />
+		<set-variable value="#[message.attributes.queryParams.code default 'SFO']" doc:name="code" doc:id="9d8b2cf1-e0a5-4923-9c1b-a11783ec63a3" variableName="code" />
 	</sub-flow>
 	<flow name="getAllAirlineFlights" doc:id="5531468b-60a1-41f5-82b9-fca1c6c0fa7c">
 		<scatter-gather doc:name="Scatter-Gather" doc:id="4cddb63c-32f4-4490-a7ee-572f676aa602">
